@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Umidjon Money">
+<link rel="manifest" href="manifest.json">
+<title>Umidjon Money</title>
+<style>
+:root{--bg:#0b0b0d;--panel:#17171b;--panel2:#202025;--line:#303036;--gold:#e8b94f;--gold2:#b98522;--text:#f7f7f7;--muted:#a6a6b0;--green:#39c98a;--red:#ff6b6b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:90px}
+header{padding:22px 18px 16px;border-bottom:1px solid #25252a;display:flex;align-items:center;gap:13px;position:sticky;top:0;background:#0b0b0df2;backdrop-filter:blur(12px);z-index:5}
+.logo{width:48px;height:48px;border:1px solid var(--gold2);border-radius:14px;display:grid;place-items:center;color:var(--gold);font-size:25px;background:#14110a}
+.brand{font-size:21px;font-weight:800;letter-spacing:.2px}.brand span{color:var(--gold);font-family:cursive}.sub{color:var(--gold);font-size:11px;letter-spacing:2px;margin-top:3px}
+.wrap{max-width:1050px;margin:auto;padding:18px}
+.balance{background:linear-gradient(135deg,#1c1a16,#151519);border:1px solid #51401f;border-radius:20px;padding:20px;margin-bottom:14px}
+.eyebrow{color:var(--muted);font-size:13px}.amount{font-size:clamp(30px,8vw,42px);font-weight:800;color:var(--gold);margin:8px 0 4px;overflow-wrap:anywhere}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 18px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;min-width:0}.stat small{color:var(--muted)}.stat strong{display:block;font-size:19px;margin-top:8px;overflow-wrap:anywhere}.green{color:var(--green)}.red{color:var(--red)}.gold{color:var(--gold)}
+.tabs{display:flex;gap:8px;overflow:auto;padding:2px 0 12px;scrollbar-width:none}.tab{white-space:nowrap;background:var(--panel);border:1px solid var(--line);color:#ddd;border-radius:12px;padding:10px 13px;font-weight:600}.tab.active{border-color:var(--gold2);color:var(--gold);background:#211b10}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;margin:10px 0}.panel h2{font-size:17px;margin:0 0 14px}.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.action{padding:15px 10px;background:#201b11;border:1px solid #6b501e;border-radius:14px;color:var(--gold);font-weight:700;text-align:center}
+button{cursor:pointer;font:inherit}.primary{background:linear-gradient(135deg,#f1c75d,#b77c17);border:0;border-radius:12px;color:#17120a;padding:12px 16px;font-weight:800}.secondary{background:var(--panel2);border:1px solid var(--line);color:#fff;border-radius:11px;padding:10px 13px}.danger{color:var(--red);border-color:#673333}
+form{display:grid;gap:11px}label{font-size:13px;color:var(--muted);display:grid;gap:6px}input,select,textarea{width:100%;background:#101014;color:#fff;border:1px solid #393940;border-radius:11px;padding:12px;font:inherit;min-width:0}input:focus,select:focus,textarea:focus{outline:1px solid var(--gold)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.hidden{display:none!important}.item{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #303036}.item:last-child{border:0}.item b{display:block}.muted{color:var(--muted);font-size:12px;margin-top:4px}.item-right{text-align:right;white-space:nowrap}.empty{color:var(--muted);text-align:center;padding:24px 5px}
+.pill{display:inline-block;border:1px solid #66501f;color:var(--gold);border-radius:30px;padding:3px 8px;font-size:11px;margin-top:5px}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#101014f5;border-top:1px solid var(--line);padding:10px max(12px,env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom));display:flex;justify-content:center;z-index:8}
+.bottom button{max-width:1050px;width:100%}
+.notice{font-size:12px;color:var(--muted);line-height:1.5}
+@media(min-width:700px){.cards{grid-template-columns:repeat(4,1fr)}.actions{grid-template-columns:repeat(4,1fr)}.wrap{padding:24px}.balance{padding:26px}}
+</style>
+</head>
+<body>
+<header><div class="logo">𝓤𝓜</div><div><div class="brand"><span>𝓤𝓶𝓲𝓭𝓳𝓸𝓷</span> Money</div><div class="sub">SHAXSIY PUL NAZORATI</div></div></header>
+<div class="wrap" style="padding-bottom:0"><div class="tabs">
+<button class="tab active" data-page="dashboard">Bosh sahifa</button>
+<button class="tab" data-page="debts">Qarzlar</button>
+<button class="tab" data-page="history">Tarix</button>
+<button class="tab" data-page="reports">Hisobot</button>
+</div></div>
+<main class="wrap">
+<section id="dashboard">
+ <div class="balance"><div class="eyebrow">Hozirgi naqd pulingiz</div><div class="amount" id="balance">0 so‘m</div><div class="eyebrow">Kirim − chiqim − berilgan qarz + olingan qarz</div></div>
+ <div class="cards">
+  <div class="stat"><small>Jami kirim</small><strong class="green" id="incomeTotal">0</strong></div>
+  <div class="stat"><small>Jami chiqim</small><strong class="red" id="expenseTotal">0</strong></div>
+  <div class="stat"><small>Siz beradigan qarz</small><strong class="gold" id="owedToYou">0</strong></div>
+  <div class="stat"><small>Siz olgan qarz</small><strong id="youOwe">0</strong></div>
+ </div>
+ <div class="panel"><h2>Tezkor amallar</h2><div class="actions">
+  <button class="action" data-open="income">＋ Kirim</button><button class="action" data-open="expense">－ Chiqim</button>
+  <button class="action" data-open="lend">↗ Qarz berish</button><button class="action" data-open="borrow">↙ Qarz olish</button>
+ </div></div>
+ <div class="panel"><h2>So‘nggi operatsiyalar</h2><div id="recent"></div></div>
+</section>
+<section id="entry" class="hidden">
+ <div class="panel"><h2 id="formTitle">Yangi yozuv</h2><form id="entryForm">
+  <input type="hidden" id="kind">
+  <label>Summa (so‘m)<input id="amount" type="number" min="1" step="1" required placeholder="Masalan: 50000"></label>
+  <label id="personLabel" class="hidden">Kim bilan? (ism)<input id="person" type="text" placeholder="Ism familiya"></label>
+  <label id="phoneLabel" class="hidden">Telefon raqami (ixtiyoriy)<input id="phone" type="tel" placeholder="+998 ..."></label>
+  <label id="dueLabel" class="hidden">Qaytarish muddati (ixtiyoriy)<input id="due" type="date"></label>
+  <label>Izoh / sabab<input id="note" type="text" placeholder="Masalan: oziq-ovqat, yo‘l kira..."></label>
+  <label>Sana<input id="date" type="date" required></label>
+  <div class="row"><button type="button" class="secondary" id="cancelEntry">Bekor qilish</button><button class="primary" type="submit">Saqlash</button></div>
+ </form></div>
+</section>
+<section id="debts" class="hidden">
+ <div class="panel"><h2>Qarzlar nazorati</h2><div class="row">
+  <div class="stat"><small>Qaytarib olish kerak</small><strong class="gold" id="lendRemain">0</strong></div>
+  <div class="stat"><small>Qaytarishim kerak</small><strong class="red" id="borrowRemain">0</strong></div>
+ </div><div id="debtList"></div></div>
+</section>
+<section id="history" class="hidden">
+ <div class="panel"><h2>Operatsiyalar tarixi</h2><label>Qidirish<input id="search" placeholder="Izoh yoki ism bo‘yicha"></label><div id="historyList"></div></div>
+</section>
+<section id="reports" class="hidden">
+ <div class="panel"><h2>Hisobot</h2><div class="cards">
+  <div class="stat"><small>Shu oy kirim</small><strong class="green" id="monthIncome">0</strong></div>
+  <div class="stat"><small>Shu oy chiqim</small><strong class="red" id="monthExpense">0</strong></div>
+ </div><p class="notice">Hisobotlar saqlangan operatsiyalaringiz asosida avtomatik hisoblanadi.</p></div>
+ <div class="panel"><h2>Ma’lumotlar</h2><button class="secondary" id="export">Zaxira nusxasini yuklab olish</button> <button class="secondary danger" id="clear">Barcha ma’lumotlarni o‘chirish</button></div>
+</section>
+</main>
+<nav class="bottom"><button class="primary" id="navHome">⌂ Bosh sahifa</button></nav>
+<script>
+const $=id=>document.getElementById(id);
+const money=n=>new Intl.NumberFormat('uz-UZ').format(Math.round(n||0))+' so‘m';
+const today=()=>new Date().toISOString().slice(0,10);
+let data=JSON.parse(localStorage.getItem('umidjonMoneyData')||'{"transactions":[],"debts":[]}');
+function save(){localStorage.setItem('umidjonMoneyData',JSON.stringify(data));render()}
+function show(name){['dashboard','entry','debts','history','reports'].forEach(x=>$(x).classList.toggle('hidden',x!==name));$('navHome').textContent=name==='dashboard'?'⌂ Bosh sahifa':'⌂ Bosh sahifaga qaytish';}
+function totals(){
+ let inc=0,exp=0,lent=0,borrow=0;
+ data.transactions.forEach(t=>{if(t.kind==='income')inc+=t.amount;if(t.kind==='expense')exp+=t.amount});
+ data.debts.forEach(d=>{if(d.kind==='lend')lent+=d.remaining;if(d.kind==='borrow')borrow+=d.remaining});
+ const lentOriginal=data.debts.filter(d=>d.kind==='lend').reduce((a,d)=>a+d.amount,0);
+ const borrowOriginal=data.debts.filter(d=>d.kind==='borrow').reduce((a,d)=>a+d.amount,0);
+ return {inc,exp,lent,borrow,balance:inc-exp-lentOriginal+borrowOriginal};
+}
+function render(){
+ const t=totals();$('balance').textContent=money(t.balance);$('incomeTotal').textContent=money(t.inc);$('expenseTotal').textContent=money(t.exp);$('owedToYou').textContent=money(t.lent);$('youOwe').textContent=money(t.borrow);
+ $('lendRemain').textContent=money(t.lent);$('borrowRemain').textContent=money(t.borrow);
+ const all=[...data.transactions.map(x=>({...x,category:'tx'})),...data.debts.map(x=>({...x,category:'debt'}))].sort((a,b)=>b.date.localeCompare(a.date));
+ const label={income:'Kirim',expense:'Chiqim',lend:'Qarz berdim',borrow:'Qarz oldim'};
+ const row=x=>`<div class="item"><div><b>${esc(x.person||x.note||label[x.kind]||'Operatsiya')}</b><div class="muted">${x.date} · ${label[x.kind]}${x.note&&x.person?' · '+esc(x.note):''}</div></div><div class="item-right"><b class="${x.kind==='income'||x.kind==='borrow'?'green':x.kind==='lend'?'gold':'red'}">${x.kind==='income'||x.kind==='borrow'?'+':'−'}${money(x.amount)}</b></div></div>`;
+ $('recent').innerHTML=all.slice(0,5).map(row).join('')||'<div class="empty">Hali yozuv yo‘q. Birinchi kirim yoki chiqimni qo‘shing.</div>';
+ $('historyList').innerHTML=all.filter(x=>(x.person||'').toLowerCase().includes(($('search').value||'').toLowerCase())||(x.note||'').toLowerCase().includes(($('search').value||'').toLowerCase())).map(row).join('')||'<div class="empty">Operatsiyalar topilmadi.</div>';
+ $('debtList').innerHTML=data.debts.map(d=>`<div class="item"><div><b>${esc(d.person)}</b><div class="muted">${d.kind==='lend'?'Siz qarz bergansiz':'Siz qarz olgansiz'} · ${d.date}${d.due?' · Muddat: '+d.due:''}</div><div class="pill">Qoldiq: ${money(d.remaining)}</div></div><div class="item-right"><button class="secondary" onclick="repay('${d.id}')">To‘lov</button></div></div>`).join('')||'<div class="empty">Hozircha qarzlar yo‘q.</div>';
+ const now=new Date(),m=now.toISOString().slice(0,7);let mi=0,me=0;data.transactions.forEach(x=>{if(x.date.startsWith(m)){if(x.kind==='income')mi+=x.amount;if(x.kind==='expense')me+=x.amount}});$('monthIncome').textContent=money(mi);$('monthExpense').textContent=money(me);
+}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function openForm(kind){
+ $('entryForm').reset();$('kind').value=kind;$('date').value=today();$('person').value='';$('phone').value='';$('due').value='';
+ const debt=['lend','borrow'].includes(kind);$('personLabel').classList.toggle('hidden',!debt);$('phoneLabel').classList.toggle('hidden',!debt);$('dueLabel').classList.toggle('hidden',!debt);
+ $('formTitle').textContent=({income:'Kirim qo‘shish',expense:'Chiqim kiritish',lend:'Qarz berish',borrow:'Qarz olish'})[kind];show('entry');
+}
+document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openForm(b.dataset.open)));
+$('entryForm').addEventListener('submit',e=>{e.preventDefault();let kind=$('kind').value,amount=Number($('amount').value);if(!amount||amount<=0)return;
+ if(['lend','borrow'].includes(kind)){if(!$('person').value.trim()){alert('Qarz olgan yoki bergan odamning ismini kiriting.');return}data.debts.push({id:crypto.randomUUID(),kind,amount,remaining:amount,person:$('person').value.trim(),phone:$('phone').value.trim(),due:$('due').value,date:$('date').value,note:$('note').value.trim()})}
+ else data.transactions.push({id:crypto.randomUUID(),kind,amount,date:$('date').value,note:$('note').value.trim()});
+ save();show('dashboard');
+});
+window.repay=id=>{const d=data.debts.find(x=>x.id===id);if(!d)return;let v=Number(prompt(`Qancha pul qaytdi? Qoldiq: ${money(d.remaining)}`));if(!v||v<=0)return;if(v>d.remaining){alert('To‘lov qolgan qarzdan ko‘p bo‘lishi mumkin emas.');return}d.remaining-=v;d.paid=(d.paid||0)+v;d.payments=d.payments||[];d.payments.push({amount:v,date:today()});data.transactions.push({id:crypto.randomUUID(),kind:d.kind==='lend'?'income':'expense',amount:v,date:today(),note:(d.kind==='lend'?'Qarz qaytdi: ':'Qarz qaytarildi: ')+d.person});save()};
+$('cancelEntry').onclick=()=>show('dashboard');$('navHome').onclick=()=>show('dashboard');
+$('search').addEventListener('input',render);
+document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.page)));
+$('export').onclick=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='umidjon-money-zaxira.json';a.click();URL.revokeObjectURL(a.href)};
+$('clear').onclick=()=>{if(confirm('Barcha kirim, chiqim va qarz yozuvlari butunlay o‘chirilsinmi?')){data={transactions:[],debts:[]};save();show('dashboard')}};
+render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
